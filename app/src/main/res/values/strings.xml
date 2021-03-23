@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Star Wars Search</string>
+    <string name="warning">Warning</string>
+    <string name="no_internet_connection">No internet connection!</string>
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="error_retrieving_json">Error retrieving JSON</string>
+    <string name="search_character_name">Search character name</string>
+    <string name="error_initializing_detail_view">Error initializing Detail View</string>
 </resources>

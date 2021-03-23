@@ -16,7 +16,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/characterRecyclerView"
         android:inputType="textPersonName"
-        android:hint="Search character name" />
+        android:hint="@string/search_character_name" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/characterRecyclerView"
@@ -25,7 +25,6 @@
         app:layout_constraintLeft_toLeftOf="@+id/editTextSearch"
         app:layout_constraintRight_toRightOf="@+id/editTextSearch"
         android:layout_marginTop="75dp"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSearch"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,9 @@ package com.carlosmfgh.swsearch;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * MyCharacter holds the JSONObject that was retrieved of the character.
+ */
 public class MyCharacter {
 
     private String mName;
@@ -19,14 +22,14 @@ public class MyCharacter {
     public MyCharacter (JSONObject jsonObject) {
         mJsonObject = jsonObject;
         try {
-            mName = mJsonObject.getString("name");
-            mHeight = mJsonObject.getString("height");
-            mMass = mJsonObject.getString("mass");
-            mHairColor = mJsonObject.getString("hair_color");
-            mSkinColor = mJsonObject.getString("skin_color");
-            mEyeColor = mJsonObject.getString("eye_color");
-            mBirthYear = mJsonObject.getString("birth_year");
-            mGender = mJsonObject.getString("gender");
+            mName = mJsonObject.getString(Constants.name);
+            mHeight = mJsonObject.getString(Constants.height);
+            mMass = mJsonObject.getString(Constants.mass);
+            mHairColor = mJsonObject.getString(Constants.hair_color);
+            mSkinColor = mJsonObject.getString(Constants.skin_color);
+            mEyeColor = mJsonObject.getString(Constants.eye_color);
+            mBirthYear = mJsonObject.getString(Constants.birth_year);
+            mGender = mJsonObject.getString(Constants.gender);
 
         } catch(JSONException e) {
             e.printStackTrace();

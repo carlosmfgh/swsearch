@@ -28,7 +28,7 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.My
 
         mCharacterList = characterList;
 
-        shared_pref = mContext.getApplicationContext().getSharedPreferences("SharedPref_favorites", 0);
+        shared_pref = mContext.getApplicationContext().getSharedPreferences(Constants.SharedPref_favorites, 0);
 
     }
 
@@ -46,10 +46,6 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-//        if (position %2 == 1) {
-//            holder.itemView.setBackgroundColor(Color.parseColor("#E0E0E0"));
-//        }
-
         String characterName = mCharacterList.get(position).getmName();
 
         holder.textViewName.setText(characterName);
@@ -66,7 +62,7 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.My
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("characterJsonObject", mCharacterList.get(position).getmJsonObject().toString());
+                intent.putExtra(Constants.characterJsonObject, mCharacterList.get(position).getmJsonObject().toString());
                 mContext.startActivity(intent);
             }
         });
@@ -96,6 +92,10 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.My
         }
     }
 
+    /**
+     * Updates the recycler view with new list.
+     * @param newListCharacters
+     */
     public void updateData(List<MyCharacter> newListCharacters) {
         this.mCharacterList = newListCharacters;
         notifyDataSetChanged();

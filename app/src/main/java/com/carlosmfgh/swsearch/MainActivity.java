@@ -1,5 +1,8 @@
 package com.carlosmfgh.swsearch;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    Context context;
     EditText editTextSearch;
     RecyclerView characterRecyclerView;
     CharactersAdapter charactersAdapter;
@@ -50,17 +54,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        context = this;
         editTextSearch = findViewById(R.id.editTextSearch);
         characterRecyclerView = findViewById(R.id.characterRecyclerView);
-        jsonReaderUrl = new JsonReaderUrl("https://swapi.dev/api/people/");
+        jsonReaderUrl = new JsonReaderUrl(Constants.baseHttpUrlPeopleSearchUrl);
 
+        // initialize the search edit text for every character change.
         initSearchBarListener();
 
+        // Prepare the recyclerview of will display the character list.
         myCharacterList = new ArrayList<>();
         charactersAdapter = new CharactersAdapter(this, myCharacterList);
         characterRecyclerView.setAdapter(charactersAdapter);
         characterRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Warn if there is no internet connection.
+        if (!isNetworkAvailable()) {
+            MyAlertDialog.OkMessageBox(this, getString(R.string.warning), getString(R.string.no_internet_connection));
+        }
     }  // onCreate
 
     /**
@@ -93,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }  // initSearchBarListener
 
     /**
-     *
+     * Subscribes to the getJSONObject observable, and receives the json object.
      * @param stringToSearch
      */
     private void search (String stringToSearch) {
@@ -105,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         jsonObject -> {
                             clearAdapter();
 
-                            JSONArray jsonObjectArray = jsonObject.getJSONArray("results");
+                            JSONArray jsonObjectArray = jsonObject.getJSONArray(Constants.results);
 
                             Log.d(TAG, "length(): " + jsonObjectArray.length());
                             for (int i = 0 ;  i < jsonObjectArray.length(); i++) {
@@ -118,7 +129,10 @@ public class MainActivity extends AppCompatActivity {
                             charactersAdapter.updateData(myCharacterList);
                         },
                         error -> {
-                            Log.d(TAG, "Error " + error.getMessage());
+                            Log.d(TAG, getString(R.string.error) + error.getMessage());
+                            MyAlertDialog.OkMessageBox(context,
+                                                       getString(R.string.error),
+                                                       getString(R.string.error_retrieving_json));
                         },
                         () -> {
 
@@ -126,9 +140,25 @@ public class MainActivity extends AppCompatActivity {
 
     }  // search
 
+    /**
+     * Clears the list of characters from the list and sets (updates) in the adapter,
+     * essentially clears the recyclerview list.
+     */
     private void clearAdapter () {
         myCharacterList.clear();
         charactersAdapter.updateData(myCharacterList);
-    }
+    }  // clearAdapter
 
+    /**
+     * Checks if there is a network connection.
+     * @return
+     */
+    private boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+    }
 }

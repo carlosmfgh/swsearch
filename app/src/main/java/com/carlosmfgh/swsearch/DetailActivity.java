@@ -52,23 +52,24 @@ public class DetailActivity extends AppCompatActivity {
         textViewEyeColor = findViewById(R.id.textViewEyeColor);
         textViewBirthYear = findViewById(R.id.textViewBirthYear);
         textViewGender = findViewById(R.id.textViewGender);
-        shared_pref = context.getApplicationContext().getSharedPreferences("SharedPref_favorites", MODE_PRIVATE);
+        shared_pref = context.getApplicationContext().getSharedPreferences(Constants.SharedPref_favorites, MODE_PRIVATE);
 
         initFavoriteButtonClickListener();
 
-        if (getIntent().hasExtra("characterJsonObject")) {
 
-            String jsonObjectString = getIntent().getStringExtra("characterJsonObject");
+        if (getIntent().hasExtra(Constants.characterJsonObject)) {
+
+            String jsonObjectString = getIntent().getStringExtra(Constants.characterJsonObject);
             try {
                 jsonObject = new JSONObject(jsonObjectString);
-                name = jsonObject.getString("name");
-                height = jsonObject.getString("height");
-                mass = jsonObject.getString("mass");
-                hairColor = jsonObject.getString("hair_color");
-                skinColor = jsonObject.getString("skin_color");
-                eyeColor = jsonObject.getString("eye_color");
-                birthYear = jsonObject.getString("birth_year");
-                gender = jsonObject.getString("gender");
+                name = jsonObject.getString(Constants.name);
+                height = jsonObject.getString(Constants.height);
+                mass = jsonObject.getString(Constants.mass);
+                hairColor = jsonObject.getString(Constants.hair_color);
+                skinColor = jsonObject.getString(Constants.skin_color);
+                eyeColor = jsonObject.getString(Constants.eye_color);
+                birthYear = jsonObject.getString(Constants.birth_year);
+                gender = jsonObject.getString(Constants.gender);
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
@@ -82,13 +83,13 @@ public class DetailActivity extends AppCompatActivity {
                 textViewGender.setText(gender);
             }
         } else {
-            //
+            MyAlertDialog.OkMessageBox(this, getString(R.string.error), getString(R.string.error_initializing_detail_view));
         }
 
         if (shared_pref.contains(name)) {
-            buttonFavorite.setImageResource(R.drawable.ic_favorite);
+            buttonFavorite.setImageResource(R.drawable.ic_favorite_large);
         } else {
-            buttonFavorite.setImageResource(R.drawable.ic_not_favorite);
+            buttonFavorite.setImageResource(R.drawable.ic_not_favorite_large);
         }
 
     }  // onCreate
@@ -102,10 +103,10 @@ public class DetailActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = shared_pref.edit();
 
             if (shared_pref.contains(name)) {
-                buttonFavorite.setImageResource(R.drawable.ic_not_favorite);
+                buttonFavorite.setImageResource(R.drawable.ic_not_favorite_large);
                 editor.remove(name);
             } else {
-                buttonFavorite.setImageResource(R.drawable.ic_favorite);
+                buttonFavorite.setImageResource(R.drawable.ic_favorite_large);
                 editor.putString(name, name);
             }
             editor.apply();
