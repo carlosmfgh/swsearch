@@ -56,7 +56,6 @@ public class DetailActivity extends AppCompatActivity {
 
         initFavoriteButtonClickListener();
 
-
         if (getIntent().hasExtra(Constants.characterJsonObject)) {
 
             String jsonObjectString = getIntent().getStringExtra(Constants.characterJsonObject);
@@ -95,7 +94,8 @@ public class DetailActivity extends AppCompatActivity {
     }  // onCreate
 
     /**
-     *
+     *  Button (favorite star) click listener for toggling the favorite state
+     *  that saves it to the shared preferences.
      */
     private void initFavoriteButtonClickListener () {
 
@@ -111,5 +111,5 @@ public class DetailActivity extends AppCompatActivity {
             }
             editor.apply();
         });
-    }
+    } // initFavoriteButtonClickListener
 }
